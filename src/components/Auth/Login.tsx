@@ -4,7 +4,7 @@ const Login = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center min-h-screen bg-white">
-        <div className="flex flex-col items-center p-12 rounded-xl shadow-lg bg-gray-200">
+        <form className="flex flex-col items-center p-12 rounded-xl shadow-lg bg-gray-200">
           <h1 className="text-2xl font-bold mb-6">Login</h1>
           <input
             type="email"
@@ -29,7 +29,7 @@ const Login = () => {
               Create Account
             </a>
           </p>
-        </div>
+        </form>
       </div>
     </>
   );
