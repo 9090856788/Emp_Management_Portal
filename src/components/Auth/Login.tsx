@@ -13,7 +13,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch(); // Use dispatch to trigger login action
 
@@ -58,7 +58,7 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    // setIsSubmitting(true);
 
     // Validate inputs
     const newErrors = {
@@ -74,12 +74,13 @@ const Login = () => {
         title: "Validation Error",
         text: "Please fix the errors in the form before submitting.",
       });
-      setIsSubmitting(false);
+      // setIsSubmitting(false);
       return;
     }
 
     // Retrieve customer data from localStorage
     const customers = JSON.parse(localStorage.getItem("customers") || "[]");
+    console.log("customers", customers);
 
     // Find the customer with the matching email
     const foundCustomer = customers.find(
@@ -114,7 +115,7 @@ const Login = () => {
       });
     }
 
-    setIsSubmitting(false);
+    // setIsSubmitting(false);
   };
 
   return (
@@ -150,14 +151,15 @@ const Login = () => {
 
         <button
           type="submit"
-          disabled={!isFormValid() || isSubmitting}
+          disabled={!isFormValid()}
           className={`w-full py-3 mb-4 rounded-xl text-white font-bold shadow-lg focus:outline-none ${
             isFormValid()
               ? "bg-blue-500 hover:bg-blue-600"
               : "bg-gray-400 cursor-not-allowed"
           }`}
         >
-          {isSubmitting ? "Submitting..." : "Submit"}
+          Submit
+          {/* {isSubmitting ? "Submitting..." : "Submit"} */}
         </button>
         <p>
           Don't have an account?{" "}

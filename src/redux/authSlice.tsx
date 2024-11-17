@@ -1,33 +1,40 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { createSlice } from "@reduxjs/toolkit";
 
-// Define the initial state
+// Define the state shape
 interface AuthState {
-  isLoggedIn: boolean;
-  user: { name: string; email: string } | null;
+  isAuthenticated: boolean;
+  // user: any | null;
 }
 
+// Initial state
 const initialState: AuthState = {
-  isLoggedIn: false,
-  user: null,
+  isAuthenticated: localStorage.getItem("isLoggedIn") === "true", // Check if the user is logged in
+  // user: JSON.parse(localStorage.getItem("customers") || "null"),
 };
 
+// Create slice
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<{ name: string; email: string }>) => {
-      state.isLoggedIn = true;
-      state.user = action.payload;
+    login: (state) => {
+      state.isAuthenticated = true;
+      // state.isAuthenticated = action.payload;
+      localStorage.setItem("isLoggedIn", "true");
+      // localStorage.setItem("customers", JSON.stringify(action.payload));
     },
     logout: (state) => {
-      state.isLoggedIn = false;
-      state.user = null;
-    },
-    setIsLoggedIn: (state, action: PayloadAction<boolean>) => {
-      state.isLoggedIn = action.payload;
+      state.isAuthenticated = false;
+      // state.user = null;
+      localStorage.removeItem("isLoggedIn");
+      // localStorage.removeItem("customers");
     },
   },
 });
 
-export const { login, logout, setIsLoggedIn } = authSlice.actions;
+// Export actions
+export const { login, logout } = authSlice.actions;
+
+// Export the reducer
 export default authSlice.reducer;

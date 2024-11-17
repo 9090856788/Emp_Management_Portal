@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
   name: string;
@@ -13,30 +13,31 @@ interface UserState {
 
 const initialState: UserState = {
   user: null,
-  errors: { name: '', email: '', password: '' },
+  errors: { name: "", email: "", password: "" },
 };
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<User>) => {
-      state.user = action.payload;
+      // Check if the user data is different before setting it
+      if (!state.user || state.user.email !== action.payload.email) {
+        state.user = action.payload;
+      }
     },
-    setErrors: (state, action: PayloadAction<{ name: string; email: string; password: string }>) => {
+    setErrors: (
+      state,
+      action: PayloadAction<{ name: string; email: string; password: string }>
+    ) => {
       state.errors = action.payload;
     },
-    resetUserState: (state) => {
-      state.user = null;
-      state.errors = { name: '', email: '', password: '' };
-    },
-    // Action to clear user data
     clearUser: (state) => {
       state.user = null;
-      state.errors = { name: '', email: '', password: '' };
+      state.errors = { name: "", email: "", password: "" };
     },
   },
 });
 
-export const { setUser, setErrors, resetUserState, clearUser } = userSlice.actions;
+export const { setUser, setErrors, clearUser } = userSlice.actions;
 export default userSlice.reducer;
