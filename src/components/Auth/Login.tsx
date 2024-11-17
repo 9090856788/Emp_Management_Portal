@@ -32,7 +32,7 @@ const Login = () => {
         timer: 2000,
         timerProgressBar: true,
       }).then(() => {
-        navigate("/home");
+        navigate("/add-employee");
       });
     } else {
       // Error message

@@ -1,16 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Navbar = () => {
-  return (
-    <div className="w-full fixed top-0 left-0 bg-white shadow-md ">
-      <div className="flex items-center justify-between p-2 max-w-7xl mx-auto">
-        <h1 className="text-2xl font-medium">
-          Hello <br /> <span className="text-3xl font-semibold">Kanhu 👋</span>
-        </h1>
+  const [menuOpen, setMenuOpen] = useState(false);
 
-        <button className="bg-red-600 text-white text-lg font-medium px-4 py-2 rounded-md hover:bg-red-700">
-          Log Out
-        </button>
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  return (
+    <div className="w-full fixed top-0 left-0 bg-white shadow-md z-50">
+      <div className="flex flex-col sm:flex-row items-center justify-between p-4 max-w-7xl mx-auto">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-medium">
+            Hello <br />
+            <span className="text-3xl sm:text-4xl font-semibold">Kanhu 👋</span>
+          </h1>
+        </div>
+
+        {/* Hamburger Menu for Mobile */}
+        <div className="sm:hidden flex items-center">
+          <button onClick={toggleMenu} className="text-3xl text-red-600">
+            {menuOpen ? "✖" : "☰"}
+          </button>
+        </div>
+
+        {/* Navbar Links - Mobile and Desktop */}
+        <div
+          className={`${
+            menuOpen ? "block" : "hidden"
+          } sm:flex sm:items-center sm:space-x-6 mt-4 sm:mt-0`}
+        >
+          <button className="bg-red-600 text-white text-lg font-medium px-4 py-2 rounded-md hover:bg-red-700">
+            Log Out
+          </button>
+        </div>
       </div>
     </div>
   );
