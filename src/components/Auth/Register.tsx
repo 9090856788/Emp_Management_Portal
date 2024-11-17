@@ -1,25 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-case-declarations */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import bcrypt from "bcryptjs";
 import Swal from "sweetalert2";
-
-interface User {
-  name: string;
-  email: string;
-  password: string;
-}
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setErrors, setUser } from "../../redux/userSlice";
 
 const LOCAL_STORAGE_KEY = "customers";
 
 const Register = () => {
-  const [formData, setFormData] = useState<User>({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [errors, setErrors] = useState({
+  const { errors } = useSelector((state: any) => state.user);
+
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
@@ -56,9 +52,9 @@ const Register = () => {
     const { name, value } = e.target;
     const error = validateField(name, value);
 
-    // Update form data and errors
+    // Update form data and errors in Redux
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+    dispatch(setErrors({ ...errors, [name]: error }));
   };
 
   const isFormValid = () => {
@@ -82,7 +78,7 @@ const Register = () => {
       password: validateField("password", formData.password),
     };
 
-    setErrors(newErrors);
+    dispatch(setErrors(newErrors));
 
     // If there are any errors, prevent submission
     if (Object.values(newErrors).some((error) => error)) {
@@ -95,7 +91,7 @@ const Register = () => {
     }
 
     // Check for duplicate email
-    const existingUsers: User[] = (() => {
+    const existingUsers: any[] = (() => {
       try {
         return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "[]");
       } catch (error) {
@@ -117,11 +113,14 @@ const Register = () => {
     const hashedPassword = bcrypt.hashSync(formData.password, 10);
 
     // Create the new user object with hashed password
-    const newUser: User = { ...formData, password: hashedPassword };
+    const newUser = { ...formData, password: hashedPassword };
 
     // Update localStorage with the new user
     const updatedUsers = [...existingUsers, newUser];
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedUsers));
+
+    // Dispatch the user data to Redux
+    dispatch(setUser(newUser));
 
     // Clear the form after submission
     setFormData({ name: "", email: "", password: "" });
@@ -132,13 +131,12 @@ const Register = () => {
       text: "Redirecting to login...",
       timer: 2000,
       timerProgressBar: true,
-    }).then(() => {
-      window.location.href = "/login";
     });
+    navigate("/login");
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white mt-12">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col items-center p-12 rounded-xl shadow-lg bg-gray-200 sm:w-3/4 md:w-1/2 lg:w-1/3"
