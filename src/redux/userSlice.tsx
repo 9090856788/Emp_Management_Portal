@@ -30,8 +30,13 @@ const userSlice = createSlice({
       state.user = null;
       state.errors = { name: '', email: '', password: '' };
     },
+    // Action to clear user data
+    clearUser: (state) => {
+      state.user = null;
+      state.errors = { name: '', email: '', password: '' };
+    },
   },
 });
 
-export const { setUser, setErrors, resetUserState } = userSlice.actions;
+export const { setUser, setErrors, resetUserState, clearUser } = userSlice.actions;
 export default userSlice.reducer;

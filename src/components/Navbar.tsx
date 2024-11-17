@@ -1,10 +1,32 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
+import { logout, setIsLoggedIn } from "../redux/authSlice"; 
+import { clearUser } from "../redux/userSlice"; 
+import { AppDispatch } from "../redux/store"; 
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store"; 
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const dispatch = useDispatch<AppDispatch>(); 
+
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const handleLogout = () => {
+    // Dispatch the logout action to reset the auth state and set isLoggedIn to false
+    dispatch(logout());
+
+    // Dispatch the clearUser action to reset user state
+    dispatch(clearUser());
+    dispatch(setIsLoggedIn(false));
+    // Clear the persisted state from localStorage manually
+    localStorage.removeItem("persist:root"); // Clear Redux Persist data
+    localStorage.removeItem("customers"); // Clear any other persisted user data (if necessary)
   };
 
   return (
@@ -31,11 +53,15 @@ const Navbar = () => {
           } sm:flex sm:items-center sm:space-x-6 mt-4 sm:mt-0`}
         >
           {/* Log Out Button */}
-          <button className="bg-red-600 text-white text-lg font-medium px-4 py-2 rounded-md hover:bg-red-700">
+          <button
+            onClick={handleLogout}
+            className="bg-red-600 text-white text-lg font-medium px-4 py-2 rounded-md hover:bg-red-700"
+          >
             Log Out
           </button>
 
           {/* Show Employee List Button */}
+          {/* You can conditionally render this button based on the logged-in status */}
           <button className="bg-blue-600 text-white text-lg font-medium px-4 py-2 rounded-md hover:bg-blue-700">
             Show Employee List
           </button>
