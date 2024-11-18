@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-case-declarations */
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import bcrypt from "bcryptjs";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -48,14 +48,17 @@ const Register = () => {
     return errorMessage;
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const error = validateField(name, value);
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      const error = validateField(name, value);
 
-    // Update form data and errors in Redux
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    dispatch(setErrors({ ...errors, [name]: error }));
-  };
+      // Update form data and errors in Redux
+      setFormData((prev) => ({ ...prev, [name]: value }));
+      dispatch(setErrors({ ...errors, [name]: error }));
+    },
+    [formData, errors]
+  );
 
   const isFormValid = () => {
     return (

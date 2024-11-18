@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { logout } from "../redux/authSlice";
 import { clearUser } from "../redux/userSlice";
 import { clearEmployee } from "../redux/employeeSlice";
