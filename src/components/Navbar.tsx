@@ -52,7 +52,7 @@ const Navbar = () => {
       <div className="flex flex-col sm:flex-row items-center justify-between p-4 max-w-7xl mx-auto">
         <div>
           <h1 className="text-2xl sm:text-3xl font-medium">
-            Hello, {isLoggedIn && userName ? userName : "👋"} <br />
+            Hello, {isLoggedIn && userName ? `${userName} 👋` : "👋"} <br />
           </h1>
         </div>
 
