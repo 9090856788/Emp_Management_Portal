@@ -4,13 +4,13 @@ import { createSlice } from "@reduxjs/toolkit";
 // Define the state shape
 interface AuthState {
   isAuthenticated: boolean;
-  // user: any | null;
+  user: any | null;
 }
 
 // Initial state
 const initialState: AuthState = {
-  isAuthenticated: localStorage.getItem("isLoggedIn") === "true", // Check if the user is logged in
-  // user: JSON.parse(localStorage.getItem("customers") || "null"),
+  isAuthenticated: localStorage.getItem("isLoggedIn") === "true",
+  user: JSON.parse(localStorage.getItem("customers") || "null"),
 };
 
 // Create slice
@@ -18,17 +18,17 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state) => {
+    login: (state, action) => {
       state.isAuthenticated = true;
-      // state.isAuthenticated = action.payload;
+      state.isAuthenticated = action.payload;
       localStorage.setItem("isLoggedIn", "true");
-      // localStorage.setItem("customers", JSON.stringify(action.payload));
+      localStorage.setItem("customers", JSON.stringify(action.payload));
     },
     logout: (state) => {
       state.isAuthenticated = false;
-      // state.user = null;
+      state.user = null;
       localStorage.removeItem("isLoggedIn");
-      // localStorage.removeItem("customers");
+      localStorage.removeItem("customers");
     },
   },
 });

@@ -129,7 +129,7 @@ const Register = () => {
       icon: "success",
       title: "Registration Successful",
       text: "Redirecting to login...",
-      timer: 2000,
+      timer: 1000,
       timerProgressBar: true,
     });
     navigate("/login");

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { logout } from "../redux/authSlice";
-// import { clearUser } from "../redux/userSlice";
-// import { clearEmployee } from "../redux/employeeSlice";
-import { AppDispatch } from "../redux/store";
+import { clearUser } from "../redux/userSlice";
+import { clearEmployee } from "../redux/employeeSlice";
+import { AppDispatch, RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"; // To use navigate for redirection
 
@@ -12,6 +12,9 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
+  const userName = useSelector((state: RootState) => state.user.user?.name);
+  console.log("userName:", userName);
 
   // Checking whether the user is logged in or not
   const isLoggedIn = !!localStorage.getItem("isLoggedIn");
@@ -24,8 +27,8 @@ const Navbar = () => {
   // Handle user logout
   const handleLogout = () => {
     dispatch(logout()); // Reset the Redux auth state
-    // dispatch(clearUser());
-    // dispatch(clearEmployee());
+    dispatch(clearUser());
+    dispatch(clearEmployee());
 
     // Clear persisted state from localStorage
     localStorage.removeItem("persist:root");
@@ -49,8 +52,7 @@ const Navbar = () => {
       <div className="flex flex-col sm:flex-row items-center justify-between p-4 max-w-7xl mx-auto">
         <div>
           <h1 className="text-2xl sm:text-3xl font-medium">
-            Hello <br />
-            <span className="text-3xl sm:text-4xl font-semibold">👋</span>
+            Hello, {isLoggedIn && userName ? userName : "👋"} <br />
           </h1>
         </div>
 
