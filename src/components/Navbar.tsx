@@ -1,29 +1,47 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { logout } from "../redux/authSlice";
-import { clearUser } from "../redux/userSlice";
+// import { clearUser } from "../redux/userSlice";
+// import { clearEmployee } from "../redux/employeeSlice";
 import { AppDispatch } from "../redux/store";
-import { useDispatch } from "react-redux";
-// import { RootState } from "../redux/store";
-// import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom"; // To use navigate for redirection
 
 const Navbar = () => {
-  // const navigate = useNavigate();
+  const [empBtntoggle, setEmpBtntoggle] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
+  // Checking whether the user is logged in or not
+  const isLoggedIn = !!localStorage.getItem("isLoggedIn");
+
+  // Toggle the mobile menu
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
+  // Handle user logout
   const handleLogout = () => {
     dispatch(logout()); // Reset the Redux auth state
     // dispatch(clearUser());
+    // dispatch(clearEmployee());
 
     // Clear persisted state from localStorage
     localStorage.removeItem("persist:root");
-    // localStorage.removeItem("customers");
-    localStorage.removeItem("isLoggedIn"); // Remove the isLoggedIn flag
+    localStorage.removeItem("isLoggedIn"); // Clear the isLoggedIn flag
+
+    // Redirect user to Login page
+    navigate("/login");
+  };
+
+  const showEmployeeList = () => {
+    navigate("/employee");
+    setEmpBtntoggle(true);
+  };
+  const addEmployeeList = () => {
+    navigate("/add-employees");
+    setEmpBtntoggle(!empBtntoggle);
   };
 
   return (
@@ -32,7 +50,7 @@ const Navbar = () => {
         <div>
           <h1 className="text-2xl sm:text-3xl font-medium">
             Hello <br />
-            <span className="text-3xl sm:text-4xl font-semibold">Kanhu 👋</span>
+            <span className="text-3xl sm:text-4xl font-semibold">👋</span>
           </h1>
         </div>
 
@@ -49,20 +67,42 @@ const Navbar = () => {
             menuOpen ? "block" : "hidden"
           } sm:flex sm:items-center sm:space-x-6 mt-4 sm:mt-0`}
         >
-          {/* Log Out Button */}
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 text-white text-lg font-medium px-4 py-2 rounded-md hover:bg-red-700"
-          >
-            Log Out
-          </button>
-          <button
-            // onClick={showUserList}
-            className="bg-blue-600 text-white text-lg font-medium px-4 py-2 rounded-md hover:bg-blue-700"
-          >
-            {/* Show Employee List */}
-            <a href="/employee">Show Employee List</a>
-          </button>
+          {/* Only show these buttons if the user is logged in */}
+          {isLoggedIn && (
+            <>
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 text-white text-lg font-medium px-4 py-2 rounded-md hover:bg-red-700"
+              >
+                Log Out
+              </button>
+              {empBtntoggle === true ? (
+                <>
+                  <button
+                    onClick={addEmployeeList}
+                    className="bg-blue-600 text-white text-lg font-medium px-4 py-2 rounded-md hover:bg-blue-700"
+                  >
+                    Add Employee
+                  </button>{" "}
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={showEmployeeList}
+                    className="bg-blue-600 text-white text-lg font-medium px-4 py-2 rounded-md hover:bg-blue-700"
+                  >
+                    Show Employee List
+                  </button>
+                </>
+              )}
+              {/* <button
+              onClick={showEmployeeList}
+                className="bg-blue-600 text-white text-lg font-medium px-4 py-2 rounded-md hover:bg-blue-700"
+              >
+                Show Employee List
+              </button> */}
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ import Register from "./components/Auth/Register";
 import Login from "./components/Auth/Login";
 import EmployeeList from "./components/Dashboard/EmployeeList";
 import EmployeeForm from "./components/Dashboard/EmployeeForm";
-// import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   // ProtectedRoute Component
@@ -24,6 +24,7 @@ const App = () => {
     <>
       {/* <Navbar /> */}
       <Router>
+        <Navbar />
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
